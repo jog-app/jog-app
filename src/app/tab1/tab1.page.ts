@@ -51,6 +51,9 @@ export class Tab1Page {
   motionData: AccelListenerEvent | null = null;
   watchingGps: boolean = false;
 
+  courseLocationPermission: boolean = false;
+  locationPermission : boolean = false;
+
   checkSensorPermissions() {
     console.log('Checking sensor permissions');
   }
@@ -61,7 +64,27 @@ export class Tab1Page {
     });
   }
 
+  requestGpsPermissions() {
+    Geolocation.requestPermissions().then((permissionsResult) => {
+      console.log('Permissions:', permissionsResult);
+    });
+  }
+
+  async checkMotionSensorsPermissions() {
+    try {
+      // Hacky -> Check if the method exists before calling it
+      // It is only available on iOS and Android (not desktop)
+      await (DeviceMotionEvent as any).requestPermission();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  
+
   startSensors() {
+    this.checkGpsPermissions();
+
     Motion.addListener('accel', (event) => {
       console.log('Accel event fired', event);
       this.motionData = event;

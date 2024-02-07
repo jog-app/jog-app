@@ -13,17 +13,26 @@
 
   <ion-card>
     <ion-button (click)="getCoords()">Get Coordinates</ion-button>
-    <ion-button (click)="startSensors()">Start Sensors</ion-button>
-    <ion-button (click)="stopSensors()">Stop Sensors</ion-button>
+    
+    <ion-button (click)="requestGpsPermissions()"
+      >Request GPS Permissions
+    </ion-button>
+
     <ion-button (click)="checkGpsPermissions()"
-      >Check GPS Permissions</ion-button
-    >
+      >Check GPS Permissions
+    </ion-button>
+    <ion-button (click)="checkMotionSensorsPermissions()"
+      >Check Motion Sensor Permissions
+    </ion-button>
     <ion-button
       (click)="watchCoords()"
       [color]="this.watchingGps ? 'danger' : 'success'"
     >
       @if(this.watchingGps) {Stop GPS} @else {Start GPS}
     </ion-button>
+
+    <ion-button (click)="startSensors()">Start Sensors</ion-button>
+    <ion-button (click)="stopSensors()">Stop Sensors</ion-button>
   </ion-card>
 
   <ion-card>
