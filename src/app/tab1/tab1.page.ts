@@ -47,16 +47,14 @@ import { DatePipe } from '@angular/common';
 export class Tab1Page {
   constructor() {}
 
-  position: Position | null = null;
-  motionData: AccelListenerEvent | null = null;
+  counter = 0;
+
+  // GPS data
   watchingGps: boolean = false;
-
+  position: Position | null = null;
+  positionTimestamp: number | undefined;
+  locationPermission: boolean = false;
   courseLocationPermission: boolean = false;
-  locationPermission : boolean = false;
-
-  checkSensorPermissions() {
-    console.log('Checking sensor permissions');
-  }
 
   checkGpsPermissions() {
     Geolocation.checkPermissions().then((permissionsResult) => {
@@ -68,33 +66,6 @@ export class Tab1Page {
     Geolocation.requestPermissions().then((permissionsResult) => {
       console.log('Permissions:', permissionsResult);
     });
-  }
-
-  async checkMotionSensorsPermissions() {
-    try {
-      // Hacky -> Check if the method exists before calling it
-      // It is only available on iOS and Android (not desktop)
-      await (DeviceMotionEvent as any).requestPermission();
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  
-
-  startSensors() {
-    this.checkGpsPermissions();
-
-    Motion.addListener('accel', (event) => {
-      console.log('Accel event fired', event);
-      this.motionData = event;
-      console.log('Motion data:', this.motionData);
-      console.log('Position:', this.position);
-    });
-  }
-
-  stopSensors() {
-    Motion.removeAllListeners();
   }
 
   async getCoords() {
@@ -112,6 +83,8 @@ export class Tab1Page {
         (position, err) => {
           console.log('New position:', position);
           this.position = position;
+          this.positionTimestamp = position?.timestamp;
+          this.counter += 1;
         }
       );
       this.watchingGps = true;
@@ -120,5 +93,37 @@ export class Tab1Page {
 
   async stopGps() {
     Geolocation.clearWatch({ id: 'watch' });
+  }
+
+  // Motion sensor data
+  motionData: AccelListenerEvent | null = null;
+
+  checkSensorPermissions() {
+    console.log('Checking sensor permissions');
+  }
+
+  async checkMotionSensorsPermissions() {
+    try {
+      // Hacky -> Check if the method exists before calling it
+      // It is only available on iOS and Android (not desktop)
+      await (DeviceMotionEvent as any).requestPermission();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  startMotionSensors() {
+    this.checkGpsPermissions();
+
+    Motion.addListener('accel', (event) => {
+      console.log('Accel event fired', event);
+      this.motionData = event;
+      console.log('Motion data:', this.motionData);
+      console.log('Position:', this.position);
+    });
+  }
+
+  stopMotionSensors() {
+    Motion.removeAllListeners();
   }
 }
