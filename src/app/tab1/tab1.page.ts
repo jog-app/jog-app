@@ -19,6 +19,7 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
 import { AccelListenerEvent, Motion } from '@capacitor/motion';
 import { Geolocation, Position } from '@capacitor/geolocation';
 import { DatePipe } from '@angular/common';
+import { PluginListenerHandle } from '@capacitor/core';
 
 @Component({
   selector: 'app-tab1',
@@ -95,27 +96,36 @@ export class Tab1Page {
     Geolocation.clearWatch({ id: 'watch' });
   }
 
-  // Motion sensor data
+  // Motion sensor data ****************************
   motionData: AccelListenerEvent | null = null;
+  watchingMotion: boolean = false;
 
   checkSensorPermissions() {
     console.log('Checking sensor permissions');
   }
 
   async checkMotionSensorsPermissions() {
+    console.log('Checking motion sensor permissions');
     try {
       // Hacky -> Check if the method exists before calling it
       // It is only available on iOS and Android (not desktop)
-      await (DeviceMotionEvent as any).requestPermission();
+      await DeviceMotionEvent.requestPermission();
     } catch (e) {
       console.error(e);
+      return;
     }
   }
 
-  startMotionSensors() {
-    this.checkGpsPermissions();
+  triggerMotionSensors() {
+    this.checkMotionSensorsPermissions();
+  }
 
-    Motion.addListener('accel', (event) => {
+  accelHandler: PluginListenerHandle | null = null;
+
+  startMotionSensors() {
+    this.checkMotionSensorsPermissions();
+
+    this.accelHandler = Motion.addListener('accel', (event) => {
       console.log('Accel event fired', event);
       this.motionData = event;
       console.log('Motion data:', this.motionData);
