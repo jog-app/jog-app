@@ -35,7 +35,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     IonToolbar,
     IonTitle,
     IonContent,
-    HttpClientModule
   ],
   providers: [],
 })
