@@ -15,7 +15,7 @@ import {
 } from '@ionic/angular/standalone';
 import { ActivitiesRequestService } from '../services/activities-request.service';
 import { Activity } from '../models/activity.interface';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -35,6 +35,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     IonToolbar,
     IonTitle,
     IonContent,
+    DatePipe,
   ],
   providers: [],
 })
@@ -48,7 +49,6 @@ export class HomePage implements OnInit {
     this.activitiesRequestService
       .getActivities()
       .subscribe((data: Activity[]) => {
-        console.log('** home page', data);
         this.activities = data;
       });
   }
