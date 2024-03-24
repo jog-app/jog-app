@@ -20,8 +20,8 @@ import { Style, Stroke } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 @Component({
   selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss'],
+  templateUrl: 'map.page.html',
+  styleUrls: ['map.page.scss'],
   standalone: true,
   imports: [
     IonHeader,
@@ -31,7 +31,7 @@ import { fromLonLat } from 'ol/proj';
     ExploreContainerComponent,
   ],
 })
-export class Tab2Page {
+export class MapPage {
   constructor() {}
 
   fakeRunData = {
