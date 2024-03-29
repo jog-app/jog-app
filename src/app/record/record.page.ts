@@ -1,10 +1,15 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
   IonButton,
+  IonCard,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardHeader,
+  IonCardContent,
 } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import TileLayer from 'ol/layer/Tile';
@@ -15,11 +20,12 @@ import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorLayer from 'ol/layer/Vector';
 import { Geometry } from 'ol/geom';
-// import { Style } from '@capacitor/status-bar';
 import { Style, Stroke } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 import { RecordService } from './record.service';
 import { SensorsService } from '../sensors/sensors.service';
+import { Observable, Subject, takeUntil, timer } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-record-page',
@@ -27,12 +33,18 @@ import { SensorsService } from '../sensors/sensors.service';
   styleUrls: ['record.page.scss'],
   standalone: true,
   imports: [
+    IonCardContent,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonCard,
     IonButton,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
     ExploreContainerComponent,
+    AsyncPipe,
   ],
 })
 export class RecordPage {
@@ -42,8 +54,12 @@ export class RecordPage {
   ) {}
 
   public activityRunning: boolean = false;
+  public timer$: Observable<number> | undefined;
+  private stopTimer$ = new Subject<boolean>();
+  public timeElapsed: number = 0;
 
   startActivity() {
+    this.timer$ = timer(0, 1000).pipe(takeUntil(this.stopTimer$));
     this.sensorsService.startMotionSensor();
     this.activityRunning = true;
   }
@@ -51,6 +67,7 @@ export class RecordPage {
   pauseActivity() {
     this.sensorsService.stopMotionSensor();
     this.activityRunning = false;
+    this.stopTimer$.next(true);
   }
 
   endActivity() {

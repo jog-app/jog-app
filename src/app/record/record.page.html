@@ -13,10 +13,26 @@
 
   <div id="map" style="height: 100%; width: 100%"></div>
 
-  @if (!activityRunning) {
-  <ion-button (click)="startActivity()">Start</ion-button>
-  <ion-button (click)="endActivity()">End</ion-button>
-  } @else {
-  <ion-button (click)="endActivity()">Pause</ion-button>
-  }
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Timer</ion-card-title>
+      <ion-card-subtitle>
+        <!-- Paused -->
+        Running: {{ activityRunning ? "Running" : "Paused"}}
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      Seconds: {{ timer$ | async }}
+
+      <div>
+        @if (!activityRunning) {
+        <ion-button (click)="startActivity()">Start</ion-button>
+        <ion-button (click)="endActivity()">End</ion-button>
+        } @else {
+        <ion-button (click)="endActivity()">Pause</ion-button>
+        }
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ActivitiesRequestService } from '../services/activities-request.service';
 import { ActivityForCreation } from '../models/activityForCreation.interface';
 
