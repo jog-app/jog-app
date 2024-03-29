@@ -21,9 +21,9 @@ import { Geolocation, Position } from '@capacitor/geolocation';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss'],
+  selector: 'app-sensors-page',
+  templateUrl: 'sensors.page.html',
+  styleUrls: ['sensors.page.scss'],
   standalone: true,
   imports: [
     IonLabel,
@@ -44,7 +44,7 @@ import { DatePipe } from '@angular/common';
     DatePipe,
   ],
 })
-export class Tab1Page {
+export class SensorsPage {
   constructor() {}
 
   counter = 0;

@@ -11,18 +11,17 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,
-  IonCardContent,
-} from '@ionic/angular/standalone';
+  IonCardContent, IonButton } from '@ionic/angular/standalone';
 import { ActivitiesRequestService } from '../services/activities-request.service';
 import { Activity } from '../models/activity.interface';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-home-page',
   standalone: true,
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [
+  imports: [IonButton, 
     IonCardContent,
     IonCardSubtitle,
     IonCardTitle,

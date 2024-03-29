@@ -12,30 +12,20 @@ export const routes: Routes = [
           import('../home/home.page').then((m) => m.HomePage),
       },
       {
-        path: 'tab1',
+        path: 'sensors',
         loadComponent: () =>
-          import('../tab1/tab1.page').then((m) => m.Tab1Page),
-      },
-      {
-        path: 'map',
-        loadComponent: () =>
-          import('../map-page/map.page').then((m) => m.MapPage),
+          import('../sensors/sensors.page').then((m) => m.SensorsPage),
       },
       {
         path: 'tab3',
         loadComponent: () =>
-          import('../tab3/tab3.page').then((m) => m.Tab3Page),
-      },
-      {
-        path: '',
-        redirectTo: '/tabs/tab1',
-        pathMatch: 'full',
+          import('../record/record.page').then((m) => m.RecordPage),
       },
     ],
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/home',
     pathMatch: 'full',
   },
 ];

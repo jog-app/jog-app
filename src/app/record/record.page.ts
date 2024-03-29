@@ -4,6 +4,7 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
+  IonButton,
 } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import * as ol from 'ol';
@@ -18,12 +19,14 @@ import { Geometry } from 'ol/geom';
 // import { Style } from '@capacitor/status-bar';
 import { Style, Stroke } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
+
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'map.page.html',
-  styleUrls: ['map.page.scss'],
+  selector: 'app-record-page',
+  templateUrl: 'record.page.html',
+  styleUrls: ['record.page.scss'],
   standalone: true,
   imports: [
+    IonButton,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -31,7 +34,7 @@ import { fromLonLat } from 'ol/proj';
     ExploreContainerComponent,
   ],
 })
-export class MapPage {
+export class RecordPage {
   constructor() {}
 
   fakeRunData = {
