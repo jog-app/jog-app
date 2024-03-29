@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -7,7 +7,6 @@ import {
   IonButton,
 } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import * as ol from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import View from 'ol/View';
@@ -19,6 +18,8 @@ import { Geometry } from 'ol/geom';
 // import { Style } from '@capacitor/status-bar';
 import { Style, Stroke } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
+import { RecordService } from './record.service';
+import { SensorsService } from '../sensors/sensors.service';
 
 @Component({
   selector: 'app-record-page',
@@ -35,7 +36,27 @@ import { fromLonLat } from 'ol/proj';
   ],
 })
 export class RecordPage {
-  constructor() {}
+  constructor(
+    private recordService: RecordService,
+    private sensorsService: SensorsService
+  ) {}
+
+  public activityRunning: boolean = false;
+
+  startActivity() {
+    this.sensorsService.startMotionSensor();
+    this.activityRunning = true;
+  }
+
+  pauseActivity() {
+    this.sensorsService.stopMotionSensor();
+    this.activityRunning = false;
+  }
+
+  endActivity() {
+    this.pauseActivity();
+    this.recordService.saveActivity();
+  }
 
   fakeRunData = {
     type: 'FeatureCollection',

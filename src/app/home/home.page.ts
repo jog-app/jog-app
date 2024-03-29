@@ -11,7 +11,9 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,
-  IonCardContent, IonButton } from '@ionic/angular/standalone';
+  IonCardContent,
+  IonButton,
+} from '@ionic/angular/standalone';
 import { ActivitiesRequestService } from '../services/activities-request.service';
 import { Activity } from '../models/activity.interface';
 import { DatePipe } from '@angular/common';
@@ -21,7 +23,8 @@ import { DatePipe } from '@angular/common';
   standalone: true,
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [IonButton, 
+  imports: [
+    IonButton,
     IonCardContent,
     IonCardSubtitle,
     IonCardTitle,
@@ -44,7 +47,6 @@ export class HomePage implements OnInit {
   public activities: Activity[] = [];
 
   ngOnInit() {
-    // console.log('HomePage ngOnInit');
     this.activitiesRequestService
       .getActivities()
       .subscribe((data: Activity[]) => {

@@ -13,5 +13,10 @@
 
   <div id="map" style="height: 100%; width: 100%"></div>
 
-  <ion-button>Start</ion-button>
+  @if (!activityRunning) {
+  <ion-button (click)="startActivity()">Start</ion-button>
+  <ion-button (click)="endActivity()">End</ion-button>
+  } @else {
+  <ion-button (click)="endActivity()">Pause</ion-button>
+  }
 </ion-content>
