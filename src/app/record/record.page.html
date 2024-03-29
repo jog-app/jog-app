@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Record Run </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Record</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="map" style="height: 100%; width: 100%"></div>
+
+  @if (!activityRunning) {
+  <ion-button (click)="startActivity()">Start</ion-button>
+  <ion-button (click)="endActivity()">End</ion-button>
+  } @else {
+  <ion-button (click)="endActivity()">Pause</ion-button>
+  }
+</ion-content>

@@ -1,9 +1,7 @@
-export interface Activity {
-  id: number;
+export interface ActivityForCreation {
   name: string;
   type: string;
-  date: Date;
+  date: Date | string;
   duration: string;
   distance: number;
-  userId: string;
 }

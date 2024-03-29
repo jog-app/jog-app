@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
+  IonButton,
 } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import * as ol from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import View from 'ol/View';
@@ -18,12 +18,16 @@ import { Geometry } from 'ol/geom';
 // import { Style } from '@capacitor/status-bar';
 import { Style, Stroke } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
+import { RecordService } from './record.service';
+import { SensorsService } from '../sensors/sensors.service';
+
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'map.page.html',
-  styleUrls: ['map.page.scss'],
+  selector: 'app-record-page',
+  templateUrl: 'record.page.html',
+  styleUrls: ['record.page.scss'],
   standalone: true,
   imports: [
+    IonButton,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -31,8 +35,28 @@ import { fromLonLat } from 'ol/proj';
     ExploreContainerComponent,
   ],
 })
-export class MapPage {
-  constructor() {}
+export class RecordPage {
+  constructor(
+    private recordService: RecordService,
+    private sensorsService: SensorsService
+  ) {}
+
+  public activityRunning: boolean = false;
+
+  startActivity() {
+    this.sensorsService.startMotionSensor();
+    this.activityRunning = true;
+  }
+
+  pauseActivity() {
+    this.sensorsService.stopMotionSensor();
+    this.activityRunning = false;
+  }
+
+  endActivity() {
+    this.pauseActivity();
+    this.recordService.saveActivity();
+  }
 
   fakeRunData = {
     type: 'FeatureCollection',

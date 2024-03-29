@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapPage } from './map.page';
+import { SensorsPage } from './sensors.page';
 
-describe('MapPage', () => {
-  let component: MapPage;
-  let fixture: ComponentFixture<MapPage>;
+describe('SensorsPage', () => {
+  let component: SensorsPage;
+  let fixture: ComponentFixture<SensorsPage>;
 
   beforeEach(async () => {
-    fixture = TestBed.createComponent(MapPage);
+    fixture = TestBed.createComponent(SensorsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
