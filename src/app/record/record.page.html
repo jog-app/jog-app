@@ -11,8 +11,6 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="map" style="height: 100%; width: 100%"></div>
-
   <ion-card>
     <ion-card-header>
       <ion-card-title>Timer</ion-card-title>
@@ -23,8 +21,8 @@
     </ion-card-header>
 
     <ion-card-content>
-      Seconds: {{ timer$ | async }}
-
+      <div>Seconds: {{ timer$ | async }}</div>
+      <!-- <div>Position: {{ lastKnownPosition }}</div> -->
       <div>
         @if (!activityRunning) {
         <ion-button (click)="startActivity()">Start</ion-button>
@@ -35,4 +33,7 @@
       </div>
     </ion-card-content>
   </ion-card>
+  <app-map
+    style="height: 100%; width: 100%"
+  ></app-map>
 </ion-content>
