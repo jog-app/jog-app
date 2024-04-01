@@ -38,7 +38,7 @@ import { MapComponent } from '../components/map/map.component';
     IonTitle,
     IonContent,
     AsyncPipe,
-    MapComponent
+    MapComponent,
   ],
 })
 export class RecordPage {
@@ -62,6 +62,7 @@ export class RecordPage {
     this.sensorsService.positionEventEmitter.subscribe(
       (position: GeolocationPosition) => {
         this.mapService.addPointToMap(position);
+        this.recordService.setNewCoordinate(position);
       }
     );
   }

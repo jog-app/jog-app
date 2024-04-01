@@ -9,14 +9,16 @@ import { ActivityForCreation } from '../models/activityForCreation.interface';
 export class RecordService {
   constructor(private activitiesRequestService: ActivitiesRequestService) {}
 
-  private readonly coordinateStream = new BehaviorSubject<number[][]>([]);
+  private readonly coordinateStream = new BehaviorSubject<
+    GeolocationPosition[]
+  >([]);
   public readonly coordinateStream$ = this.coordinateStream.asObservable();
 
   public getCoordinateStream() {
     return this.coordinateStream.value;
   }
 
-  public setNewCoordinate(newValue: number[]) {
+  public setNewCoordinate(newValue: GeolocationPosition) {
     const currentValue = this.getCoordinateStream();
     this.coordinateStream.next([...currentValue, newValue]);
   }
@@ -30,6 +32,8 @@ export class RecordService {
       duration: '01:30:45',
       distance: 10.0,
     };
+
+    console.log('### Coordinate Stream', this.getCoordinateStream());
 
     this.activitiesRequestService
       .postActivity(newActivity)

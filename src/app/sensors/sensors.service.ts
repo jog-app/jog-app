@@ -8,7 +8,10 @@ export class SensorsService {
   constructor() {}
 
   private watchingGps: boolean = false;
-  public readonly positionEventEmitter = new EventEmitter<Position | null>();
+  public readonly positionEventEmitter =
+    new EventEmitter<GeolocationPosition | null>();
+
+  private geolocationRef: Promise<string> | null = null;
 
   // Location Permissions
   public locationPermission: boolean = false;
@@ -32,22 +35,27 @@ export class SensorsService {
       this.watchingGps = false;
     } else {
       this.watchingGps = true;
-      Geolocation.watchPosition(
+      this.geolocationRef = Geolocation.watchPosition(
         { enableHighAccuracy: true },
         (position, err) => {
           console.log('New position:', position);
           // Emit the position values to subscribers
-          this.positionEventEmitter.emit(position);
+          // FIXME: CAN WE ALWAYS CAST THIS TO GeolocationPosition? []
+          this.positionEventEmitter.emit(position as GeolocationPosition);
         }
       );
     }
   }
 
   public async stopGpsTracking() {
-    Geolocation.clearWatch({ id: 'watch' });
+    const geolocationRefId = await this.geolocationRef;
+    if (geolocationRefId) {
+      Geolocation.clearWatch({ id: geolocationRefId });
+      this.watchingGps = false;
+    }
   }
 
-  // Motion Sensors
+  //TODO: Motion Sensor Functionality
   public startMotionSensor() {
     console.log('startMotionSensor');
   }
