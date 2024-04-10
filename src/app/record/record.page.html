@@ -22,7 +22,7 @@
       <div>
         @if (!activityRunning) {
         <ion-button (click)="startActivity()">Start</ion-button>
-        <ion-button (click)="endActivity()">End</ion-button>
+        <ion-button (click)="openSaveActivityModal()">End</ion-button>
         } @else {
         <ion-button (click)="endActivity()">Pause</ion-button>
         }

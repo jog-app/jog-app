@@ -10,7 +10,9 @@ import {
   IonCardSubtitle,
   IonCardHeader,
   IonCardContent,
+  IonModal,
 } from '@ionic/angular/standalone';
+import { ModalController } from '@ionic/angular';
 
 import { fromLonLat } from 'ol/proj';
 import { RecordService } from './record.service';
@@ -20,6 +22,7 @@ import { AsyncPipe } from '@angular/common';
 import { Position } from '@capacitor/geolocation';
 import { MapService } from '../components/map/map.service';
 import { MapComponent } from '../components/map/map.component';
+import { SaveActivityModalComponent } from './components/save-activity-modal/save-activity-modal.component';
 
 @Component({
   selector: 'app-record-page',
@@ -27,6 +30,7 @@ import { MapComponent } from '../components/map/map.component';
   styleUrls: ['record.page.scss'],
   standalone: true,
   imports: [
+    IonModal,
     IonCardContent,
     IonCardHeader,
     IonCardSubtitle,
@@ -45,7 +49,8 @@ export class RecordPage {
   constructor(
     private recordService: RecordService,
     public sensorsService: SensorsService,
-    private mapService: MapService
+    private mapService: MapService,
+    private modalController: ModalController
   ) {}
 
   public activityRunning: boolean = false;
@@ -65,6 +70,25 @@ export class RecordPage {
         this.recordService.setNewCoordinate(position);
       }
     );
+  }
+
+  async openSaveActivityModal() {
+    const modal = await this.modalController.create({
+      component: SaveActivityModalComponent,
+    });
+
+    modal.present();
+
+    // Extract data from modal
+    const { data, role } = await modal.onWillDismiss();
+
+    console.log('data', data);
+    console.log('role', role);
+
+    if (role === 'confirm') {
+      // Use extracted data to call record service "save" function
+      console.log('Modal Closed', data);
+    }
   }
 
   startActivity() {
