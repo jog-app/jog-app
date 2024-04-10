@@ -2,7 +2,10 @@
   <ion-toolbar>
     <ion-title>Record</ion-title>
   </ion-toolbar>
-  <ion-card>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card class="flex flex-row items-center">
     <ion-card-header>
       <ion-card-title>Timer </ion-card-title>
       <ion-card-subtitle>
@@ -16,7 +19,6 @@
     </ion-card-header>
 
     <ion-card-content>
-      <!-- <div>Position: {{ lastKnownPosition }}</div> -->
       <div>
         @if (!activityRunning) {
         <ion-button (click)="startActivity()">Start</ion-button>
@@ -27,14 +29,6 @@
       </div>
     </ion-card-content>
   </ion-card>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Record</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-map style="display: fl; width: 100%"></app-map>
+  <app-map style="width: 100%"></app-map>
 </ion-content>

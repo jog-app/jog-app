@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Constants } from '../constants';
-import { Activity } from '../models/activity.interface';
+import { Activity } from '../models/Activity.interface';
 import { UserService } from './user.service';
 import { Observable } from 'rxjs';
-import { ActivityForCreation } from '../models/activityForCreation.interface';
+import { ActivityForCreation } from '../models/ActivityForCreation.interface';
 
 @Injectable({
   providedIn: 'root',

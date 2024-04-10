@@ -15,7 +15,7 @@ import {
   IonButton,
 } from '@ionic/angular/standalone';
 import { ActivitiesRequestService } from '../services/activities-request.service';
-import { Activity } from '../models/activity.interface';
+import { Activity } from '../models/Activity.interface';
 import { DatePipe } from '@angular/common';
 
 @Component({
