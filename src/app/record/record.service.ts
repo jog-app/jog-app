@@ -27,7 +27,7 @@ export class RecordService {
     this.coordinateStream.next([...currentValue, newValue]);
   }
 
-  public saveActivity() {
+  public saveActivity(activityName: string, activityType: string) {
     console.log('### Coordinate Stream', this.getCoordinateStream());
 
     const convertedGeoPositions = this.getCoordinateStream().map((position) =>
@@ -40,8 +40,8 @@ export class RecordService {
 
     // Mocked data
     const newActivity: ActivityForCreation = {
-      name: 'Run in the park',
-      type: 'Run',
+      name: activityName,
+      type: activityType,
       date: '2024-03-28T06:00:00Z',
       duration: '01:30:45',
       distance: 10.0,

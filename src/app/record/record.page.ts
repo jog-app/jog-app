@@ -82,12 +82,14 @@ export class RecordPage {
     // Extract data from modal
     const { data, role } = await modal.onWillDismiss();
 
+    // TODO: Make data response strongly typed
     console.log('data', data);
     console.log('role', role);
 
     if (role === 'confirm') {
       // Use extracted data to call record service "save" function
       console.log('Modal Closed', data);
+      this.endActivity(data.name, data.activityType);
     }
   }
 
@@ -104,9 +106,9 @@ export class RecordPage {
     this.stopTimer$.next(true);
   }
 
-  endActivity() {
+  endActivity(activityName: string, activityType: string) {
     this.pauseActivity();
     this.sensorsService.stopGpsTracking();
-    this.recordService.saveActivity();
+    this.recordService.saveActivity(activityName, activityType);
   }
 }

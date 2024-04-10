@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import {
   IonHeader,
@@ -39,10 +44,16 @@ import {
     IonCardContent,
     IonModal,
     FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class SaveActivityModalComponent implements OnInit {
   name: string = '';
+
+  saveActivityForm = new FormGroup({
+    name: new FormControl(''),
+    activityType: new FormControl(''),
+  });
 
   constructor(private modalController: ModalController) {}
 
@@ -55,6 +66,8 @@ export class SaveActivityModalComponent implements OnInit {
   }
 
   confirm() {
-    return this.modalController.dismiss(this.name, 'confirm');
+    // const { name, activityType } = this.saveActivityForm.value;
+
+    return this.modalController.dismiss(this.saveActivityForm.value, 'confirm');
   }
 }

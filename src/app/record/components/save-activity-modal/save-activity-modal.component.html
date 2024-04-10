@@ -11,11 +11,20 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ion-item>
-    <ion-input
-      labelPlacement="stacked"
-      label="Enter your name"
-      placeholder="Your name"
-      [(ngModel)]="name"
-    ></ion-input>
+    <form [formGroup]="saveActivityForm">
+      <ion-input
+        labelPlacement="stacked"
+        label="Activity Name"
+        placeholder="Evening Run"
+        formControlName="name"
+      ></ion-input>
+
+      <ion-input
+        labelPlacement="stacked"
+        label="Activity Type"
+        placeholder="Run"
+        formControlName="activityType"
+      ></ion-input>
+    </form>
   </ion-item>
 </ion-content>
