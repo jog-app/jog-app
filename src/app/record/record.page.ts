@@ -89,7 +89,11 @@ export class RecordPage {
     if (role === 'confirm') {
       // Use extracted data to call record service "save" function
       console.log('Modal Closed', data);
-      this.endActivity(data.name, data.activityType);
+
+      // Log timer value
+      console.log('Time Elapsed', this.timeElapsed);
+
+      this.endActivity(data.name, data.activityType, this.timeElapsed);
     }
   }
 
@@ -106,9 +110,9 @@ export class RecordPage {
     this.stopTimer$.next(true);
   }
 
-  endActivity(activityName: string, activityType: string) {
+  endActivity(activityName: string, activityType: string, timeElapsed: number) {
     this.pauseActivity();
     this.sensorsService.stopGpsTracking();
-    this.recordService.saveActivity(activityName, activityType);
+    this.recordService.saveActivity(activityName, activityType, timeElapsed);
   }
 }

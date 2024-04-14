@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ActivitiesRequestService } from '../services/activities-request.service';
 import { ActivityForCreation } from '../models/ActivityForCreation.interface';
 import { GeoLocationUtilsService } from '../services/geo-location-utils.service';
+import { DateTimeUtilsService } from '../services/date-time-utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,8 @@ import { GeoLocationUtilsService } from '../services/geo-location-utils.service'
 export class RecordService {
   constructor(
     private activitiesRequestService: ActivitiesRequestService,
-    private geoLocationUtils: GeoLocationUtilsService
+    private geoLocationUtils: GeoLocationUtilsService,
+    private dateTimeUtils: DateTimeUtilsService
   ) {}
 
   private readonly coordinateStream = new BehaviorSubject<
@@ -27,7 +29,11 @@ export class RecordService {
     this.coordinateStream.next([...currentValue, newValue]);
   }
 
-  public saveActivity(activityName: string, activityType: string) {
+  public saveActivity(
+    activityName: string,
+    activityType: string,
+    timeElapsed: number
+  ) {
     console.log('### Coordinate Stream', this.getCoordinateStream());
 
     const convertedGeoPositions = this.getCoordinateStream().map((position) =>
@@ -36,15 +42,28 @@ export class RecordService {
       )
     );
 
+    // Get todays date-time in UTC format
+    const activityDateTime = this.dateTimeUtils.todaysDateTimeInISO();
+
+    const activityDuration =
+      this.dateTimeUtils.convertSecondsToHHMMSS(timeElapsed);
+
+    const activityDistance =
+      this.geoLocationUtils.calculateTotalDistanceTraveled(
+        this.getCoordinateStream()
+      );
+
+    debugger;
+
     console.log('Converted Geo Positions', convertedGeoPositions);
 
     // Mocked data
     const newActivity: ActivityForCreation = {
       name: activityName,
       type: activityType,
-      date: '2024-03-28T06:00:00Z',
-      duration: '01:30:45',
-      distance: 10.0,
+      date: activityDateTime,
+      duration: activityDuration,
+      distance: activityDistance,
       geoPositions: [...convertedGeoPositions],
     };
 
