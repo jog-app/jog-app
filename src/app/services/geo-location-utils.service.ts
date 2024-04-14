@@ -59,15 +59,17 @@ export class GeoLocationUtilsService {
     const lat2 = pos2.coords.latitude;
     const lon2 = pos2.coords.longitude;
 
+
+    // Haversine formula
     const R = 6371e3; // metres
-    const dLat = this.degreesToRadians(lat2 - lat1);
-    const dLong = this.degreesToRadians(lon2 - lon1);
+    const lr1 = this.degreesToRadians(lat1);
+    const lr2 = this.degreesToRadians(lat2);
+    const dlr = this.degreesToRadians(lat2 - lat1);
+    const dlo = this.degreesToRadians(lon2 - lon1);
 
     const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.degreesToRadians(lat1) + this.degreesToRadians(lat2)) *
-        Math.sin(dLong / 2) *
-        Math.sin(dLong / 2);
+      Math.sin(dlr / 2) * Math.sin(dlr / 2) +
+      Math.cos(lr1) * Math.cos(lr2) * Math.sin(dlo / 2) * Math.sin(dlo / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
 

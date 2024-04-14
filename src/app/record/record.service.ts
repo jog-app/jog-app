@@ -34,8 +34,6 @@ export class RecordService {
     activityType: string,
     timeElapsed: number
   ) {
-    console.log('### Coordinate Stream', this.getCoordinateStream());
-
     const convertedGeoPositions = this.getCoordinateStream().map((position) =>
       this.geoLocationUtils.mapGeoLocationPositionToGeoPositionForCreation(
         position
@@ -53,17 +51,13 @@ export class RecordService {
         this.getCoordinateStream()
       );
 
-    debugger;
-
-    console.log('Converted Geo Positions', convertedGeoPositions);
-
     // Mocked data
     const newActivity: ActivityForCreation = {
       name: activityName,
       type: activityType,
       date: activityDateTime,
       duration: activityDuration,
-      distance: activityDistance,
+      distance: activityDistance ?? 0,
       geoPositions: [...convertedGeoPositions],
     };
 
