@@ -21,6 +21,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('../record/record.page').then((m) => m.RecordPage),
       },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('../settings/settings.page').then((m) => m.SettingsPage),
+      },
     ],
   },
   {
