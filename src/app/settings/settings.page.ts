@@ -1,4 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
 import {
   IonHeader,
   IonToolbar,
@@ -19,6 +23,9 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
     IonTitle,
     IonContent,
     ExploreContainerComponent,
+    CommonModule,
+    FormsModule,
+    IonicModule,
   ],
 })
 export class SettingsPage {
