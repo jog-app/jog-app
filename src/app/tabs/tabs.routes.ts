@@ -17,7 +17,7 @@ export const routes: Routes = [
           import('../sensors/sensors.page').then((m) => m.SensorsPage),
       },
       {
-        path: 'tab3',
+        path: 'records',
         loadComponent: () =>
           import('../record/record.page').then((m) => m.RecordPage),
       },
