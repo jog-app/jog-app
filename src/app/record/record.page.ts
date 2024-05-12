@@ -14,7 +14,6 @@ import {
 } from '@ionic/angular/standalone';
 import { ModalController } from '@ionic/angular';
 
-import { fromLonLat } from 'ol/proj';
 import { RecordService } from './record.service';
 import { SensorsService } from '../sensors/sensors.service';
 import { Observable, Subject, takeUntil, timer } from 'rxjs';
@@ -99,6 +98,11 @@ export class RecordPage {
 
   startActivity() {
     this.timer$ = timer(0, 1000).pipe(takeUntil(this.stopTimer$));
+
+    this.timer$.pipe().subscribe((time) => {
+      this.timeElapsed += 1;
+    });
+
     this.sensorsService.startGpsTracking();
     // this.sensorsService.startMotionSensor();
     this.activityRunning = true;

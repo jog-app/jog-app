@@ -18,7 +18,31 @@ export class DateTimeUtilsService {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
+    
+    let hoursValue;
+    if (hours < 10) {
+      hoursValue = `0${hours}`;
+    } else {
+      hoursValue = hours;
+    }
 
-    return `${hours}:${minutes}:${remainingSeconds}`;
+    let minutesValue;
+    if (minutes < 10) {
+      minutesValue = `0${minutes}`;
+    } else {
+      minutesValue = minutes;
+    }
+
+    let secondsValue;
+    if (remainingSeconds < 10) {
+      secondsValue = `0${remainingSeconds}`;
+    } else {
+      secondsValue = remainingSeconds;
+    }
+
+    if (hours < 10) {
+      hours
+    }
+    return `${hoursValue}:${minutesValue}:${secondsValue}`;
   }
 }

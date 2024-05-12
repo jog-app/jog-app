@@ -4,6 +4,7 @@ import { ActivitiesRequestService } from '../services/activities-request.service
 import { ActivityForCreation } from '../models/ActivityForCreation.interface';
 import { GeoLocationUtilsService } from '../services/geo-location-utils.service';
 import { DateTimeUtilsService } from '../services/date-time-utils.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,8 @@ export class RecordService {
   constructor(
     private activitiesRequestService: ActivitiesRequestService,
     private geoLocationUtils: GeoLocationUtilsService,
-    private dateTimeUtils: DateTimeUtilsService
+    private dateTimeUtils: DateTimeUtilsService,
+    private router: Router
   ) {}
 
   private readonly coordinateStream = new BehaviorSubject<
@@ -34,8 +36,6 @@ export class RecordService {
     activityType: string,
     timeElapsed: number
   ) {
-    console.log('### Coordinate Stream', this.getCoordinateStream());
-
     const convertedGeoPositions = this.getCoordinateStream().map((position) =>
       this.geoLocationUtils.mapGeoLocationPositionToGeoPositionForCreation(
         position
@@ -53,17 +53,13 @@ export class RecordService {
         this.getCoordinateStream()
       );
 
-    debugger;
-
-    console.log('Converted Geo Positions', convertedGeoPositions);
-
     // Mocked data
     const newActivity: ActivityForCreation = {
       name: activityName,
       type: activityType,
       date: activityDateTime,
       duration: activityDuration,
-      distance: activityDistance,
+      distance: activityDistance ?? 0,
       geoPositions: [...convertedGeoPositions],
     };
 
@@ -71,6 +67,8 @@ export class RecordService {
       .postActivity(newActivity)
       .subscribe((data) => {
         console.log('### Save Current Run - Response', data);
+        // Navigate to home tab
+        this.router.navigateByUrl('/tabs/home');
       });
   }
 }
