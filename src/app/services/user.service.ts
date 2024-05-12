@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class UserService {
   constructor() {}
 
-  private userId = '05da912e-9126-4efa-8747-f163f2283703';
+  private userId = 'bcd501de-094f-4ab5-8cd7-529a7bfd9157';
 
   public getUserId(): string {
     return this.userId;
