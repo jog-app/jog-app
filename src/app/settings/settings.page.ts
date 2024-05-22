@@ -25,6 +25,52 @@ import {
   ],
 })
 export class SettingsPage {
+  reset() {
     
+  }
+  
+  submit() {
+
+  }
+  
+  milesperhour() {
+
+  }
+
+  kilometersperhour() {
+
+  }
+
+  celsius() {
+
+  }
+
+  fahrenheit() {
+
+  }
+
+  light() {
+
+  }
+
+  dark() {
+
+  }
+
+  notificationson() {
+
+  }
+
+  notificationsoff() {
+
+  }
+
+  on() {
+
+  }
+
+  off() {
+
+  }
 }
 

@@ -34,6 +34,8 @@
             <ion-input label="Weight"></ion-input>
         </ion-item>
     </ion-list>
+    <ion-button (click)="submit">Submit</ion-button>
+    <ion-button (click)="reset">Reset</ion-button>
 </ion-card>
 
 <ion-card>
@@ -42,7 +44,24 @@
         <ion-card-subtitle>Have fun choosing:</ion-card-subtitle>    
     </ion-card-header>
 
-    <ion-list>
+    <ion-button (click)="milesperhour">Miles / Per Hour</ion-button>
+    <ion-button (click)="kilometersperhour">Kilometers / Per Hour</ion-button>
+
+    <ion-button (click)="celsius">Celsius</ion-button>
+    <ion-button (click)="fahrenheit">Fahrenheit</ion-button>
+
+    <ion-button (click)="dark">Dark</ion-button>
+    <ion-button (click)="light">Light</ion-button>
+
+    <ion-button (click)="notificationson">Notifications On</ion-button>
+    <ion-button (click)="notificationsoff">Notifications Off</ion-button>
+    
+    <ion-button (click)="on">On</ion-button>
+    <!--These buttons are for data sharing-->
+    <ion-button (click)="off">Off</ion-button>
+
+
+    <!-- <ion-list>
         <ion-item>
             <ion-input label="Units Of Measurement -"></ion-input>
             <ion-segment value="unitmeasurement">
@@ -66,6 +85,7 @@
                 </ion-segment-button>
             </ion-segment>
         </ion-item>           
-    </ion-list>
+    </ion-list> -->
     
 </ion-card>
+     
