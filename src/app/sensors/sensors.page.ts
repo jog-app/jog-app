@@ -15,7 +15,6 @@ import {
   IonList,
   IonLabel,
 } from '@ionic/angular/standalone';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { AccelListenerEvent, Motion } from '@capacitor/motion';
 import { Geolocation, Position } from '@capacitor/geolocation';
 import { DatePipe } from '@angular/common';
@@ -40,7 +39,6 @@ import { DatePipe } from '@angular/common';
     IonToolbar,
     IonTitle,
     IonContent,
-    ExploreContainerComponent,
     DatePipe,
   ],
 })

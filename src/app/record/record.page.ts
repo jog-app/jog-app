@@ -1,25 +1,27 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
   IonButton,
+  IonCard,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardHeader,
+  IonCardContent,
+  IonModal,
 } from '@ionic/angular/standalone';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
-import View from 'ol/View';
-import { Feature, Map } from 'ol';
-import VectorSource from 'ol/source/Vector';
-import GeoJSON from 'ol/format/GeoJSON';
-import VectorLayer from 'ol/layer/Vector';
-import { Geometry } from 'ol/geom';
-// import { Style } from '@capacitor/status-bar';
-import { Style, Stroke } from 'ol/style';
-import { fromLonLat } from 'ol/proj';
+import { ModalController } from '@ionic/angular';
+
 import { RecordService } from './record.service';
 import { SensorsService } from '../sensors/sensors.service';
+import { Observable, Subject, takeUntil, timer } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { Position } from '@capacitor/geolocation';
+import { MapService } from '../components/map/map.service';
+import { MapComponent } from '../components/map/map.component';
+import { SaveActivityModalComponent } from './components/save-activity-modal/save-activity-modal.component';
 
 @Component({
   selector: 'app-record-page',
@@ -27,101 +29,94 @@ import { SensorsService } from '../sensors/sensors.service';
   styleUrls: ['record.page.scss'],
   standalone: true,
   imports: [
+    IonModal,
+    IonCardContent,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonCard,
     IonButton,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
-    ExploreContainerComponent,
+    AsyncPipe,
+    MapComponent,
   ],
 })
 export class RecordPage {
   constructor(
     private recordService: RecordService,
-    private sensorsService: SensorsService
+    public sensorsService: SensorsService,
+    private mapService: MapService,
+    private modalController: ModalController
   ) {}
 
   public activityRunning: boolean = false;
+  public timer$: Observable<number> | undefined;
+  private stopTimer$ = new Subject<boolean>();
+  public timeElapsed: number = 0;
+  public lastKnownPosition: number[] | null = null;
+
+  ngOnInit() {
+    // TODO: When should we unsubscribe from this? []
+    // a) When the component is destroyed
+    // b) When the activity is ended
+    // c) When the activity is paused?
+    this.sensorsService.positionEventEmitter.subscribe(
+      (position: GeolocationPosition) => {
+        this.mapService.addPointToMap(position);
+        this.recordService.setNewCoordinate(position);
+      }
+    );
+  }
+
+  async openSaveActivityModal() {
+    const modal = await this.modalController.create({
+      component: SaveActivityModalComponent,
+    });
+
+    modal.present();
+
+    // Extract data from modal
+    const { data, role } = await modal.onWillDismiss();
+
+    // TODO: Make data response strongly typed
+    console.log('data', data);
+    console.log('role', role);
+
+    if (role === 'confirm') {
+      // Use extracted data to call record service "save" function
+      console.log('Modal Closed', data);
+
+      // Log timer value
+      console.log('Time Elapsed', this.timeElapsed);
+
+      this.endActivity(data.name, data.activityType, this.timeElapsed);
+    }
+  }
 
   startActivity() {
-    this.sensorsService.startMotionSensor();
+    this.timer$ = timer(0, 1000).pipe(takeUntil(this.stopTimer$));
+
+    this.timer$.pipe().subscribe((time) => {
+      this.timeElapsed += 1;
+    });
+
+    this.sensorsService.startGpsTracking();
+    // this.sensorsService.startMotionSensor();
     this.activityRunning = true;
   }
 
   pauseActivity() {
     this.sensorsService.stopMotionSensor();
     this.activityRunning = false;
+    this.stopTimer$.next(true);
   }
 
-  endActivity() {
+  endActivity(activityName: string, activityType: string, timeElapsed: number) {
     this.pauseActivity();
-    this.recordService.saveActivity();
-  }
-
-  fakeRunData = {
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          coordinates: [
-            [-114.11417790581667, 51.04647254789293],
-            [-114.11252069194907, 51.04652464154],
-            [-114.11111206016174, 51.04679813222526],
-            [-114.1104906049617, 51.046954411891505],
-            [-114.11022130770817, 51.04739720141649],
-            [-114.10868838488071, 51.047905101835994],
-            [-114.10744547448002, 51.04794417086836],
-            [-114.10582969774232, 51.047866026937044],
-            [-114.10369603488806, 51.04769672727309],
-            [-114.10323328689141, 51.04764096386552],
-          ],
-          type: 'LineString',
-        },
-      },
-    ],
-  };
-
-  map: Map | undefined;
-
-  vectorSource: VectorSource = new VectorSource({
-    features: new GeoJSON()
-      .readFeatures(this.fakeRunData, {
-        featureProjection: 'EPSG:3857',
-      })
-      .map((feature) => feature as Feature<Geometry>),
-  });
-
-  // Define the style for line features
-  lineStyle = new Style({
-    stroke: new Stroke({
-      color: '#ffcc33',
-      width: 4,
-    }),
-  });
-
-  vectorLayer = new VectorLayer({
-    source: this.vectorSource,
-    style: this.lineStyle,
-  });
-
-  calgaryCoords = [-114.11388000463317, 51.046448538027505];
-  calgaryMercator = fromLonLat(this.calgaryCoords);
-
-  ionViewDidEnter() {
-    this.map = new Map({
-      target: 'map',
-      layers: [
-        new TileLayer({
-          source: new OSM(),
-        }),
-        this.vectorLayer,
-      ],
-      view: new View({
-        center: this.calgaryMercator,
-        zoom: 14,
-      }),
-    });
+    this.sensorsService.stopGpsTracking();
+    this.recordService.saveActivity(activityName, activityType, timeElapsed);
   }
 }
